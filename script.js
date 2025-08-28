@@ -40,7 +40,9 @@
                 noHistory: "Нет сохранённых сигналов",
                 darkTheme: "Тёмная тема",
                 lightTheme: "Светлая тема",
-                telegramBtn: "Telegram"
+                telegramBtn: "Telegram",
+                timeframes: ["5 секунд", "15 секунд", "1 минута", "3 минуты", "5 минут", "10 минут"],
+                signalPlaceholder: "Нажмите 'Получить сигнал' для генерации торгового сигнала",
             },
             en: {
                 currencyLabel: "Currency Pair",
@@ -62,7 +64,9 @@
                 noHistory: "No saved signals",
                 darkTheme: "Dark Theme",
                 lightTheme: "Light Theme",
-                telegramBtn: "Telegram"
+                telegramBtn: "Telegram",
+                timeframes: ["5 seconds", "15 seconds", "1 minute", "3 minutes", "5 minutes", "10 minutes"],
+                signalPlaceholder: "Click 'Get Signal' to generate a trading signal",
             },
             uz: {
                 currencyLabel: "Valyuta juftligi",
@@ -84,7 +88,9 @@
                 noHistory: "Saqlangan signallar yo'q",
                 darkTheme: "Qora mavzu",
                 lightTheme: "Och mavzu",
-                telegramBtn: "Telegram"
+                telegramBtn: "Telegram",
+                timeframes: ["5 soniya", "15 soniya", "1 daqiqa", "3 daqiqa", "5 daqiqa", "10 daqiqa"],
+                signalPlaceholder: "Savdo signalini yaratish uchun 'Signal olish' tugmasini bosing"
             }
         };
         
@@ -549,66 +555,95 @@
         
         // Перевод временного интервала в миллисекунды
         function parseTimeframeToMs(timeframeText) {
-            const lowercase = timeframeText.toLowerCase();
-            const numberMatch = lowercase.match(/\d+/);
-            const value = numberMatch ? parseInt(numberMatch[0], 10) : 30;
-            
-            if (lowercase.includes("second") || lowercase.includes("seconds") || 
-                lowercase.includes("секунд") || lowercase.includes("секунда") ||
-                lowercase.includes("soniya")) {
-                return value * 1000;
-            }
-            if (lowercase.includes("minute") || lowercase.includes("minutes") || 
-                lowercase.includes("минут") || lowercase.includes("минута") ||
-                lowercase.includes("minut")) {
-                return value * 60 * 1000;
-            }
-            if (lowercase.includes("hour") || lowercase.includes("hours") || 
-                lowercase.includes("час") || lowercase.includes("часа") ||
-                lowercase.includes("soat")) {
-                return value * 60 * 60 * 1000;
-            }
-            return 30 * 1000; // По умолчанию 30 секунд
-        }
+    const lowercase = timeframeText.toLowerCase();
+    const numberMatch = lowercase.match(/\d+/);
+    const value = numberMatch ? parseInt(numberMatch[0], 10) : 30;
+    
+    // Поддержка всех языков
+    if (lowercase.includes("second") || lowercase.includes("seconds") || 
+        lowercase.includes("секунд") || lowercase.includes("секунда") ||
+        lowercase.includes("soniya")) {
+        return value * 1000;
+    }
+    if (lowercase.includes("minute") || lowercase.includes("minutes") || 
+        lowercase.includes("минут") || lowercase.includes("минута") ||
+        lowercase.includes("minut") || lowercase.includes("daqiqa")) {
+        return value * 60 * 1000;
+    }
+    if (lowercase.includes("hour") || lowercase.includes("hours") || 
+        lowercase.includes("час") || lowercase.includes("часа") ||
+        lowercase.includes("soat")) {
+        return value * 60 * 60 * 1000;
+    }
+    return 30 * 1000; // По умолчанию 30 секунд
+}
         
         // Смена языка
-        function changeLanguage() {
-            const language = getCurrentLanguage();
-            updateTranslations(language);
-            updateTheme();
-            
-            // Обновление кнопки генерации, если активен кулдаун
-            const generateButton = document.getElementById("generate-btn");
-            if (generateButton.disabled) {
-                const pair = document.getElementById("currency-pair").value;
-                if (cooldowns[pair] && cooldowns[pair].endTime > Date.now()) {
-                    startCooldown(pair);
-                }
-            }
+        // Смена языка
+function changeLanguage() {
+    const language = getCurrentLanguage();
+    updateTranslations(language);
+    updateTimeframeOptions(); // Добавьте эту строку
+    updateTheme();
+    
+    // Обновление кнопки генерации, если активен кулдаун
+    const generateButton = document.getElementById("generate-btn");
+    if (generateButton.disabled) {
+        const pair = document.getElementById("currency-pair").value;
+        if (cooldowns[pair] && cooldowns[pair].endTime > Date.now()) {
+            startCooldown(pair);
         }
+    }
+}
         
         // Обновление переводов
         function updateTranslations(language) {
-            const t = translations[language];
-            
-            document.getElementById("currency-label").innerHTML = '<i class="fas fa-chart-line"></i> ' + t.currencyLabel;
-            document.getElementById("timeframe-label").innerHTML = '<i class="fas fa-clock"></i> ' + t.timeframeLabel;
-            document.getElementById("language-label").innerHTML = '<i class="fas fa-globe"></i> ' + t.languageLabel;
-            document.getElementById("theme-label").innerHTML = '<i class="fas fa-moon"></i> ' + t.themeLabel;
-            document.getElementById("success-rate-label").textContent = t.successRate;
-            document.getElementById("active-signals-label").textContent = t.activeSignals;
-            document.getElementById("signal-title").textContent = t.signalTitle;
-            document.getElementById("chart-title").textContent = t.chartTitle;
-            document.getElementById("history-title").textContent = t.historyTitle;
-            
-            
-            const generateButton = document.getElementById("generate-btn");
-            generateButton.innerHTML = '<i class="fas fa-bolt"></i> ' + t.generateButton;
-            
-            const telegramBtn = document.querySelector('.telegram-btn');
-if (telegramBtn) telegramBtn.innerHTML = '<i class="fab fa-telegram"></i> ' + t.telegramBtn;
-            
+    const t = translations[language];
+    
+    document.getElementById("currency-label").innerHTML = '<i class="fas fa-chart-line"></i> ' + t.currencyLabel;
+    document.getElementById("timeframe-label").innerHTML = '<i class="fas fa-clock"></i> ' + t.timeframeLabel;
+    document.getElementById("language-label").innerHTML = '<i class="fas fa-globe"></i> ' + t.languageLabel;
+    document.getElementById("theme-label").innerHTML = '<i class="fas fa-moon"></i> ' + t.themeLabel;
+    document.getElementById("success-rate-label").textContent = t.successRate;
+    document.getElementById("active-signals-label").textContent = t.activeSignals;
+    document.getElementById("signal-title").textContent = t.signalTitle;
+    document.getElementById("chart-title").textContent = t.chartTitle;
+    document.getElementById("history-title").textContent = t.historyTitle;
+    
+    const generateButton = document.getElementById("generate-btn");
+    generateButton.innerHTML = '<i class="fas fa-bolt"></i> ' + t.generateButton;
+    
+    const telegramBtn = document.querySelector('.telegram-btn');
+    if (telegramBtn) telegramBtn.innerHTML = '<i class="fab fa-telegram"></i> ' + t.telegramBtn;
+    
+    const signalPlaceholder = document.querySelector('.signal-placeholder');
+if (signalPlaceholder) {
+    signalPlaceholder.textContent = t.signalPlaceholder;
+}
 
-            // Обновление истории
-            renderSignalHistory();
-        }
+    // Обновление истории
+    renderSignalHistory();
+}
+        function updateTimeframeOptions() {
+    const timeframeSelect = document.getElementById("timeframe");
+    const language = getCurrentLanguage();
+    const timeframes = translations[language].timeframes;
+    
+    // Сохраняем текущее значение
+    const currentValue = timeframeSelect.value;
+    
+    // Очищаем и заполняем заново
+    timeframeSelect.innerHTML = "";
+    
+    timeframes.forEach(timeframe => {
+        const option = document.createElement("option");
+        option.value = timeframe;
+        option.textContent = timeframe;
+        timeframeSelect.appendChild(option);
+    });
+    
+    // Восстанавливаем значение, если оно существует в новых опциях
+    if (timeframes.includes(currentValue)) {
+        timeframeSelect.value = currentValue;
+    }
+}
