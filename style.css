@@ -601,3 +601,24 @@
     color: white;
     text-decoration: none;
 }
+/* Стили для статистики внизу */
+.main-content .dashboard {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+/* Адаптивность для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .main-content .dashboard {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .main-content .stat-card {
+        padding: 15px;
+    }
+    
+    .main-content .stat-value {
+        font-size: 24px;
+    }
+}
