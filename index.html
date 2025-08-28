@@ -71,7 +71,7 @@
                 </div>
                 <button id="generate-btn"><i class="fas fa-bolt"></i> Получить сигнал</button>
                 <a href="https://t.me/your_channel" target="_blank" class="telegram-btn">
-    <i class="fab fa-telegram"></i> Подписаться в Telegram
+    <i class="fab fa-telegram"></i>Telegram
 </a>
             </div>
             
@@ -94,20 +94,7 @@
         </div>
         
         <div class="main-content">
-            <div class="dashboard">
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-signal"></i> <span id="success-rate-label">Процент успеха</span></div>
-                    <div class="stat-value" id="success-rate-value">87.3%</div>
-                    <div class="stat-change" id="success-rate-change"><i class="fas fa-arrow-up"></i> <span id="success-rate-diff">+2.5%</span> за месяц</div>
-                    <div class="stat-trend" id="success-rate-trend">↑</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-chart-bar"></i> <span id="active-signals-label">Активные сигналы</span></div>
-                    <div class="stat-value" id="active-signals-value">24</div>
-                    <div class="stat-change" id="active-signals-change"><i class="fas fa-arrow-down"></i> <span id="active-signals-diff">-3</span> за день</div>
-                    <div class="stat-trend negative" id="active-signals-trend">↓</div>
-                </div>
-            </div>
+           
             
             <div class="signal-block">
                 <div class="signal-header">
@@ -115,10 +102,10 @@
                     <span id="signal-time"></span>
                 </div>
                 <div id="signal-result" class="signal-result">
-                    <div class="signal-placeholder">
-                        Нажмите "Получить сигнал" для генерации торгового сигнала
-                    </div>
-                </div>
+    <div class="signal-placeholder" id="signal-placeholder-text">
+        Нажмите "Получить сигнал" для генерации торгового сигнала
+    </div>
+</div>
             </div>
             
             <div class="chart-block">
@@ -147,6 +134,20 @@
                 </div>
                 <div id="history-content" class="history-content">
                     <div class="history-empty">Нет сохранённых сигналов</div>
+                </div>
+            </div>
+             <div class="dashboard">
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-signal"></i> <span id="success-rate-label">Процент успеха</span></div>
+                    <div class="stat-value" id="success-rate-value">87.3%</div>
+                    <div class="stat-change" id="success-rate-change"><i class="fas fa-arrow-up"></i> <span id="success-rate-diff">+2.5%</span></div>
+                    <div class="stat-trend" id="success-rate-trend">↑</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-chart-bar"></i> <span id="active-signals-label">Активные сигналы</span></div>
+                    <div class="stat-value" id="active-signals-value">24</div>
+                    <div class="stat-change" id="active-signals-change"><i class="fas fa-arrow-down"></i> <span id="active-signals-diff">-3</span></div>
+                    <div class="stat-trend negative" id="active-signals-trend">↓</div>
                 </div>
             </div>
         </div>
